@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1e264c">
   <title>Microduck 模擬場｜週末玩 3D</title>
-  <link rel="stylesheet" href="./style.css?v=winwin">
+  <link rel="stylesheet" href="./style.css?v=head-pose">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body>
@@ -31,12 +31,21 @@
         <div class="actions">
           <button id="sit" type="button" aria-pressed="false">坐下</button>
           <button id="look" type="button" aria-pressed="false">左右看</button>
+          <button id="head-control" type="button" aria-expanded="false" aria-controls="head-panel">頭部控制</button>
           <button id="camera" type="button" aria-pressed="true">跟隨視角</button>
           <button id="reset" type="button">重置</button>
+        </div>
+        <div class="head-panel" id="head-panel" hidden>
+          <label for="head-yaw">左右轉 <output id="head-yaw-angle" for="head-yaw">0°</output></label>
+          <input id="head-yaw" type="range" min="-170" max="170" value="0">
+          <label for="head-pitch">抬低頭 <output id="head-pitch-angle" for="head-pitch">20°</output></label>
+          <input id="head-pitch" type="range" min="-90" max="90" value="20">
+          <label for="head-roll">左右歪頭 <output id="head-roll-angle" for="head-roll">0°</output></label>
+          <input id="head-roll" type="range" min="-25" max="25" value="0">
         </div>
       </fieldset>
     </section>
   </main>
-  <script type="module" src="./app.js?v=winwin"></script>
+  <script type="module" src="./app.js?v=head-pose"></script>
 </body>
 </html>

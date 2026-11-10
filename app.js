@@ -130,6 +130,28 @@ function play(renderer, scene, camera, orbit, model, shadow) {
   let follow = true;
   const sitButton = document.querySelector('#sit');
   const lookButton = document.querySelector('#look');
+  const headButton = document.querySelector('#head-control');
+  const headPanel = document.querySelector('#head-panel');
+  const headAngles = {};
+  const headInputs = ['yaw', 'pitch', 'roll'].map(axis => {
+    const input = document.querySelector('#head-' + axis);
+    const output = document.querySelector('#head-' + axis + '-angle');
+    const joint = 'head_' + axis;
+    const update = () => {
+      headAngles[joint] = THREE.MathUtils.degToRad(Number(input.value));
+      output.value = input.value + '°';
+    };
+    update();
+    input.addEventListener('input', () => {
+      if (looking) toggleLook();
+      update();
+    });
+    return { input, update };
+  });
+  headButton.addEventListener('click', () => {
+    headPanel.hidden = !headPanel.hidden;
+    headButton.setAttribute('aria-expanded', String(!headPanel.hidden));
+  });
   const cameraButton = document.querySelector('#camera');
   const held = (...codes) => codes.some(code => keys.has(code) || [...pad.values()].includes(code));
 
@@ -156,6 +178,10 @@ function play(renderer, scene, camera, orbit, model, shadow) {
   function reset() {
     if (seated) toggleSit();
     if (looking) toggleLook();
+    for (const { input, update } of headInputs) {
+      input.value = input.defaultValue;
+      update();
+    }
     duck.position.set(0, 0, 0);
     duck.rotation.y = 0;
     stride = 0;
@@ -223,9 +249,11 @@ function play(renderer, scene, camera, orbit, model, shadow) {
       offset[side + '_knee'] = sign * (seated ? 0.98 : lift * amplitude * 0.55);
       offset[side + '_ankle'] = sign * (seated ? -0.51 : -step * 0.44 - lift * amplitude * 0.55);
     }
-    offset.head_yaw = looking ? (reducedMotion.matches ? 0.35 : Math.sin(now / 460) * 0.65) : 0;
+    const lookAngle = reducedMotion.matches ? 0.35 : Math.sin(now / 460) * 0.65;
     for (const [name, joint] of joints) {
-      const target = clamp((stand[name] ?? 0) + (offset[name] ?? 0), ...joint.range);
+      const base = headAngles[name] ?? stand[name] ?? 0;
+      const angle = name === 'head_yaw' && looking ? lookAngle : base + (offset[name] ?? 0);
+      const target = clamp(angle, ...joint.range);
       joint.value = damp(joint.value, target, 14, dt);
       joint.node.quaternion.copy(joint.rest).multiply(turn.setFromAxisAngle(joint.axis, joint.value));
     }
