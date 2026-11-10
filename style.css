@@ -1,35 +1,38 @@
 :root {
   color-scheme: dark;
   font-family: system-ui, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  color: #fff2e6;
-  background: #121018;
-  --orange: #ff893d;
-  --pink: #ff4ca3;
+  color: #f5f8ff;
+  background: #1e264c;
+  --accent: #85ddff;
 }
 * { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: radial-gradient(circle, #362137 1px, transparent 1.5px) 0 0 / 16px 16px;
-}
+body { margin: 0; }
 main { max-width: 1240px; margin: auto; padding: 12px clamp(8px, 3vw, 32px) 16px; }
-header { margin-bottom: 10px; }
-header p { margin: 0 0 4px; font-size: .73rem; font-weight: 800; letter-spacing: .14em; }
-header p span { color: var(--pink); }
-h1 { margin: 0; color: var(--orange); font-size: clamp(1.6rem, 5vw, 3.25rem); font-weight: 1000; line-height: .98; letter-spacing: -.035em; text-shadow: 2px 2px #471d4a; }
-h1 span { color: #ff74b8; font-size: .63em; letter-spacing: .01em; }
-.arena { border: 2px solid #79516e; background: #1d1727; box-shadow: 4px 4px #402449; }
-.stage { position: relative; height: clamp(320px, calc(100dvh - 158px), 740px); background: #1b1727; }
+header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 18px; margin-bottom: 12px; }
+.brand-logo { display: block; width: clamp(125px, 24vw, 176px); height: auto; }
+h1 { margin: 0; font-size: clamp(1.1rem, 3.5vw, 1.85rem); font-weight: 850; line-height: 1.1; }
+h1 span { color: var(--accent); font-size: .8em; }
+.arena { overflow: hidden; border: 1px solid #57668f; border-radius: 16px; background: #263054; }
+.stage {
+  position: relative;
+  height: clamp(320px, calc(100dvh - 125px), 740px);
+  background:
+    radial-gradient(circle at 17px 29px, #f4f7ff 1px, transparent 1.8px) 0 0 / 113px 83px,
+    radial-gradient(circle at 48px 15px, #9fb7ec 1px, transparent 1.5px) 0 0 / 137px 107px,
+    radial-gradient(circle at 25px 57px, #cad8ff 0.6px, transparent 1.3px) 0 0 / 73px 97px,
+    #1e264c;
+}
 canvas { display: block; width: 100%; height: 100%; }
-.badge { position: absolute; top: 12px; left: 12px; background: #17131f; border: 1px solid #9d675f; color: var(--orange); padding: 5px 8px; font-size: .74rem; font-weight: 800; pointer-events: none; }
+.badge { position: absolute; top: 12px; left: 12px; background: #273459; border: 1px solid #536998; border-radius: 999px; color: #eef5ff; padding: 5px 9px; font-size: .74rem; font-weight: 800; pointer-events: none; }
 #load-status, .noscript { position: absolute; top: 44%; left: 5%; right: 5%; text-align: center; font-weight: 750; }
 fieldset { border: 0; margin: 0; min-width: 0; }
 #controls { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 8px; }
-.hint { color: #e3c8de; font-size: .77rem; }
-kbd { padding: 2px 4px; border: 1px solid #9a718e; border-radius: 4px; }
+.hint { color: #d6e0f6; font-size: .77rem; }
+kbd { padding: 2px 4px; border: 1px solid #7586ad; border-radius: 4px; }
 .actions { display: flex; gap: 5px; }
-button { min-height: 42px; border: 1px solid #946b8e; border-radius: 4px; padding: 0 9px; background: #241c2e; color: #fff2e6; font: inherit; font-size: .82rem; font-weight: 780; cursor: pointer; }
-button[aria-pressed="true"], button:active { background: var(--orange); color: #201325; border-color: var(--orange); }
-button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+button { min-height: 42px; border: 1px solid #7182ab; border-radius: 8px; padding: 0 9px; background: #29365d; color: #f5f8ff; font: inherit; font-size: .82rem; font-weight: 780; cursor: pointer; }
+button[aria-pressed="true"], button:active { background: var(--accent); color: #182441; border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button:disabled { opacity: .55; cursor: default; }
 #move-pad { position: absolute; bottom: 10px; left: 10px; display: grid; grid-template-columns: repeat(3, 44px); gap: 3px; padding: 0; touch-action: none; }
 #move-pad button { min-height: 44px; opacity: .87; user-select: none; touch-action: none; }

@@ -92,10 +92,10 @@ async function loadDuck() {
 }
 
 function addArena(scene) {
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), new THREE.MeshStandardMaterial({color: 0x222038}));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), new THREE.MeshStandardMaterial({color: 0x252f58}));
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = -2;
-  const grid = new THREE.GridHelper(1150, 23, 0x594870, 0x39334d);
+  const grid = new THREE.GridHelper(1150, 23, 0x6077ae, 0x3d507e);
   grid.position.y = -1;
   scene.add(floor, grid, new THREE.HemisphereLight(0xfff3e3, 0x6f6c9c, 2.15));
   const light = new THREE.DirectionalLight(0xffddbb, 2.7);
@@ -257,12 +257,11 @@ function play(renderer, scene, camera, orbit, model, shadow) {
 
 async function start() {
   const model = await loadDuck();
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.65));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x181522);
-  scene.fog = new THREE.FogExp2(0x181522, 0.0012);
+  scene.fog = new THREE.FogExp2(0x1e264c, 0.0012);
   const shadow = addArena(scene);
   scene.add(shadow, model.duck);
   const camera = new THREE.PerspectiveCamera(38, 1, 1, 3000);

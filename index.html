@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#121018">
+  <meta name="theme-color" content="#1e264c">
   <title>Microduck 模擬場｜週末玩 3D</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=winwin">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body>
   <main>
     <header>
-      <p>週末玩 3D <span>／</span> 互動沙盒</p>
-      <h1>MICRODUCK <span>模擬場</span></h1>
+      <img class="brand-logo" src="./assets/winwin-logo.png" alt="WINWIN 打包勝利">
+      <h1>Microduck <span>模擬場</span></h1>
     </header>
     <section class="arena" aria-label="Microduck 3D 操作場">
       <div class="stage" id="stage">
-        <div class="badge">● 本機沙盒</div>
+        <div class="badge">週末玩 3D</div>
         <p id="load-status" role="status">正在載入 Microduck…</p>
         <noscript><p class="noscript">開啟 JavaScript 即可操作。</p></noscript>
         <fieldset id="move-pad" aria-label="移動方向" disabled>
@@ -37,6 +37,6 @@
       </fieldset>
     </section>
   </main>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=winwin"></script>
 </body>
 </html>
