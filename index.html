@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1e264c">
   <title>Microduck 模擬場｜週末玩 3D</title>
-  <link rel="stylesheet" href="./style.css?v=head-panel">
+  <link rel="stylesheet" href="./style.css?v=colors">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body>
@@ -35,6 +35,11 @@
           <button id="camera" type="button" aria-pressed="true">跟隨視角</button>
           <button id="reset" type="button">重置</button>
         </div>
+        <div class="color-options" role="group" aria-label="部件配色">
+          <button type="button" data-color="ff6816" aria-pressed="true">橘色</button>
+          <button type="button" data-color="82d8ff" aria-pressed="false">淺藍</button>
+          <button type="button" data-color="ffd93d" aria-pressed="false">黃色</button>
+        </div>
         <div class="head-panel" id="head-panel" hidden>
           <label for="head-yaw">左右轉 <output id="head-yaw-angle" for="head-yaw">0°</output></label>
           <input id="head-yaw" type="range" min="-170" max="170" value="0">
@@ -46,6 +51,6 @@
       </fieldset>
     </section>
   </main>
-  <script type="module" src="./app.js?v=head-pose"></script>
+  <script type="module" src="./app.js?v=colors"></script>
 </body>
 </html>

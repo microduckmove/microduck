@@ -30,6 +30,12 @@ fieldset { border: 0; margin: 0; min-width: 0; }
 .hint { color: #d6e0f6; font-size: .77rem; }
 kbd { padding: 2px 4px; border: 1px solid #7586ad; border-radius: 4px; }
 .actions { display: flex; gap: 5px; }
+.color-options { display: flex; gap: 5px; }
+.color-options button[data-color="ff6816"] { --swatch: #ff6816; }
+.color-options button[data-color="82d8ff"] { --swatch: #82d8ff; }
+.color-options button[data-color="ffd93d"] { --swatch: #ffd93d; }
+.color-options button::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 50%; background: var(--swatch); }
+.color-options button[aria-pressed="true"] { outline: 2px solid var(--swatch); outline-offset: -2px; }
 .head-panel:not([hidden]) { display: grid; flex-basis: 100%; grid-template-columns: 7rem minmax(0, 1fr); align-items: center; gap: 2px 12px; padding: 8px; border-top: 1px solid #57668f; }
 .head-panel label { display: flex; justify-content: space-between; gap: 4px; font-size: .82rem; }
 .head-panel output { color: var(--accent); font-variant-numeric: tabular-nums; }
@@ -50,7 +56,7 @@ button:disabled { opacity: .55; cursor: default; }
   .head-panel:not([hidden]) {
     position: absolute;
     z-index: 2;
-    inset: auto 8px 60px;
+    inset: auto 8px 108px;
     padding: 6px 10px;
     border: 1px solid #7182ab;
     border-radius: 10px;

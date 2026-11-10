@@ -88,7 +88,7 @@ async function loadDuck() {
       }
     }
   }
-  return { duck, joints, feet };
+  return { duck, joints, feet, accentMaterial: materials.get(0xff6816) };
 }
 
 function addArena(scene) {
@@ -310,6 +310,15 @@ async function start() {
   new ResizeObserver(resize).observe(stage);
   stage.prepend(renderer.domElement);
   status.hidden = true;
+  const colorButtons = controls.querySelectorAll('[data-color]');
+  for (const button of colorButtons) {
+    button.addEventListener('click', () => {
+      model.accentMaterial.color.setHex(Number.parseInt(button.dataset.color, 16));
+      for (const option of colorButtons) {
+        option.setAttribute('aria-pressed', String(option === button));
+      }
+    });
+  }
   controls.disabled = false;
   document.querySelector('#move-pad').disabled = false;
   play(renderer, scene, camera, orbit, model, shadow);
