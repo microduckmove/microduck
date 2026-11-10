@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121018">
+  <title>Microduck 模擬場｜週末玩 3D</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+  <main>
+    <header>
+      <p>週末玩 3D <span>／</span> 互動沙盒</p>
+      <h1>MICRODUCK <span>模擬場</span></h1>
+    </header>
+    <section class="arena" aria-label="Microduck 3D 操作場">
+      <div class="stage" id="stage">
+        <div class="badge">● 本機沙盒</div>
+        <p id="load-status" role="status">正在載入 Microduck…</p>
+        <noscript><p class="noscript">開啟 JavaScript 即可操作。</p></noscript>
+        <fieldset id="move-pad" aria-label="移動方向" disabled>
+          <button type="button" data-move="ArrowUp" aria-label="前進">▲</button>
+          <button type="button" data-move="ArrowLeft" aria-label="向左轉">◀</button>
+          <button type="button" data-move="ArrowDown" aria-label="後退">▼</button>
+          <button type="button" data-move="ArrowRight" aria-label="向右轉">▶</button>
+        </fieldset>
+      </div>
+      <fieldset id="controls" aria-label="動作和視角" disabled>
+        <span class="hint"><kbd>WASD</kbd> 或方向鍵移動 · 拖曳轉視角</span>
+        <div class="actions">
+          <button id="sit" type="button" aria-pressed="false">坐下</button>
+          <button id="look" type="button" aria-pressed="false">左右看</button>
+          <button id="camera" type="button" aria-pressed="true">跟隨視角</button>
+          <button id="reset" type="button">重置</button>
+        </div>
+      </fieldset>
+    </section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
