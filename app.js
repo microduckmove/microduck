@@ -42,6 +42,7 @@ async function loadDuck() {
   const nodes = new Map();
   const joints = new Map();
   const feet = [];
+  const waist = new THREE.Group();
   const displayGeometry = new Map();
   const materials = new Map();
   const seen = new Set();
@@ -81,14 +82,16 @@ async function loadDuck() {
       const mesh = new THREE.Mesh(displayGeometry.get(part.mesh), materials.get(color));
       if (part.pos) mesh.position.fromArray(part.pos);
       if (part.quat) setQuaternion(mesh, part.quat);
-      node.add(mesh);
+      (body.parent === null ? waist : node).add(mesh);
       if (part.mesh.startsWith('sole_')) {
         mesh.geometry.computeBoundingBox();
         feet.push(mesh);
       }
     }
   }
-  return { duck, joints, feet, accentMaterial: materials.get(0xff6816) };
+  nodes.get('trunk_base').add(waist);
+  waist.add(nodes.get('neck'));
+  return { duck, joints, feet, waist, accentMaterial: materials.get(0xff6816) };
 }
 
 function addArena(scene) {
@@ -133,12 +136,12 @@ function play(renderer, scene, camera, orbit, model, shadow) {
   const headButton = document.querySelector('#head-control');
   const headPanel = document.querySelector('#head-panel');
   const headAngles = {};
-  const headInputs = ['yaw', 'pitch', 'roll'].map(axis => {
-    const input = document.querySelector('#head-' + axis);
-    const output = document.querySelector('#head-' + axis + '-angle');
-    const joint = 'head_' + axis;
+  const headInputs = [...headPanel.querySelectorAll('input')].map(input => {
+    const output = document.getElementById(input.id + '-angle');
+    const joint = input.dataset.joint;
     const update = () => {
-      headAngles[joint] = THREE.MathUtils.degToRad(Number(input.value));
+      const direction = joint === 'right_hip_pitch' ? -1 : 1;
+      headAngles[joint] = THREE.MathUtils.degToRad(Number(input.value) * direction);
       output.value = input.value + '°';
     };
     update();
@@ -195,7 +198,7 @@ function play(renderer, scene, camera, orbit, model, shadow) {
   lookButton.addEventListener('click', toggleLook);
   const moveKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD'];
   window.addEventListener('keydown', event => {
-    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.target.matches?.('input')) return;
     if (moveKeys.includes(event.code)) {
       event.preventDefault();
       keys.add(event.code);
@@ -242,21 +245,19 @@ function play(renderer, scene, camera, orbit, model, shadow) {
     const offset = {};
     for (const [side, sign] of [['left', 1], ['right', -1]]) {
       const swing = Math.sin(phase) * sign;
-      const lift = Math.max(0, swing);
       const amplitude = stride * (reducedMotion.matches ? 0.42 : 1);
       const step = swing * amplitude * (forward || 0.45);
-      offset[side + '_hip_pitch'] = sign * (seated ? -0.47 : step * 0.44);
-      offset[side + '_knee'] = sign * (seated ? 0.98 : lift * amplitude * 0.55);
-      offset[side + '_ankle'] = sign * (seated ? -0.51 : -step * 0.44 - lift * amplitude * 0.55);
+      offset[side + '_hip_pitch'] = sign * (seated ? 1.45 : step * 0.28);
     }
     const lookAngle = reducedMotion.matches ? 0.35 : Math.sin(now / 460) * 0.65;
     for (const [name, joint] of joints) {
-      const base = headAngles[name] ?? stand[name] ?? 0;
+      const base = (stand[name] ?? 0) + (headAngles[name] ?? 0);
       const angle = name === 'head_yaw' && looking ? lookAngle : base + (offset[name] ?? 0);
       const target = clamp(angle, ...joint.range);
       joint.value = damp(joint.value, target, 14, dt);
       joint.node.quaternion.copy(joint.rest).multiply(turn.setFromAxisAngle(joint.axis, joint.value));
     }
+    model.waist.rotation.z = damp(model.waist.rotation.z, headAngles.waist, 14, dt);
 
     // Ground the lowest sole using its corners in the posed rig.
     duck.position.y = 0;
