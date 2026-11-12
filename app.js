@@ -100,10 +100,13 @@ function addArena(scene) {
   floor.position.y = -2;
   const grid = new THREE.GridHelper(1150, 23, 0x6077ae, 0x3d507e);
   grid.position.y = -1;
-  scene.add(floor, grid, new THREE.HemisphereLight(0xfff3e3, 0x6f6c9c, 2.15));
-  const light = new THREE.DirectionalLight(0xffddbb, 2.7);
+  scene.add(floor, grid, new THREE.HemisphereLight(0xfff3e3, 0xa4afd2, 2.8));
+  const light = new THREE.DirectionalLight(0xffe8d1, 3.2);
   light.position.set(230, 400, 200);
   scene.add(light);
+  const fill = new THREE.DirectionalLight(0xe2edff, 1.35);
+  fill.position.set(320, 130, -240);
+  scene.add(fill);
 
   const marker = new THREE.RingGeometry(75, 77, 64);
   marker.rotateX(-Math.PI / 2);
