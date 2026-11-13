@@ -143,7 +143,7 @@ function play(renderer, scene, camera, orbit, model, shadow) {
     const output = document.getElementById(input.id + '-angle');
     const joint = input.dataset.joint;
     const update = () => {
-      const direction = joint === 'right_hip_pitch' ? -1 : 1;
+      const direction = joint === 'left_hip_pitch' ? -1 : 1;
       headAngles[joint] = THREE.MathUtils.degToRad(Number(input.value) * direction);
       output.value = input.value + '°';
     };
@@ -163,6 +163,11 @@ function play(renderer, scene, camera, orbit, model, shadow) {
 
   function toggleSit() {
     seated = !seated;
+    for (const { input, update } of headInputs) {
+      if (!input.dataset.joint.endsWith('_hip_pitch')) continue;
+      input.value = seated ? input.max : input.defaultValue;
+      update();
+    }
     sitButton.setAttribute('aria-pressed', seated);
     sitButton.textContent = seated ? '站起' : '坐下';
   }
@@ -250,13 +255,14 @@ function play(renderer, scene, camera, orbit, model, shadow) {
       const swing = Math.sin(phase) * sign;
       const amplitude = stride * (reducedMotion.matches ? 0.42 : 1);
       const step = swing * amplitude * (forward || 0.45);
-      offset[side + '_hip_pitch'] = sign * (seated ? 1.45 : step * 0.28);
+      offset[side + '_hip_pitch'] = sign * step * 0.28;
     }
     const lookAngle = reducedMotion.matches ? 0.35 : Math.sin(now / 460) * 0.65;
     for (const [name, joint] of joints) {
       const base = (stand[name] ?? 0) + (headAngles[name] ?? 0);
       const angle = name === 'head_yaw' && looking ? lookAngle : base + (offset[name] ?? 0);
-      const target = clamp(angle, ...joint.range);
+      // The printed hip swings from the displayed standing pose, independently of the servo limits.
+      const target = name.endsWith('_hip_pitch') ? angle : clamp(angle, ...joint.range);
       joint.value = damp(joint.value, target, 14, dt);
       joint.node.quaternion.copy(joint.rest).multiply(turn.setFromAxisAngle(joint.axis, joint.value));
     }
